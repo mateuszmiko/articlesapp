@@ -1,0 +1,50 @@
+{
+  "extends": [
+    "stylelint-config-sass-guidelines",
+    "stylelint-config-prettier"
+  ],
+  "plugins": [
+    "stylelint-scss",
+    "stylelint-prettier"
+  ],
+  "rules": {
+    "prettier/prettier": true,
+    "max-nesting-depth": null,
+    "scss/at-import-partial-extension-blacklist": null,
+    "at-rule-empty-line-before": [
+      "always",
+      {
+        "except": [
+          "blockless-after-blockless"
+        ],
+        "ignore": [
+          "first-nested",
+          "after-comment"
+        ],
+        "ignoreAtRules": [
+          "import"
+        ]
+      }
+    ],
+    "order/order": [
+      [
+        "custom-properties",
+        "dollar-variables",
+        {
+          "type": "at-rule",
+          "name": "extend"
+        },
+        {
+          "type": "at-rule",
+          "name": "include"
+        },
+        "declarations",
+        "rules",
+        {
+          "type": "at-rule",
+          "name": "media"
+        }
+      ]
+    ],
+  }
+}
