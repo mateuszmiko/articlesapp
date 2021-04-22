@@ -2,8 +2,8 @@
 
 .article-description {
   color: $dark-slate;
+  flex-grow: 1;
   font-size: $font-17;
-  height: 108px;
   line-height: 19px;
   margin-bottom: 32px;
 }

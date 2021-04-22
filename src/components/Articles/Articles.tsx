@@ -1,7 +1,8 @@
 import './articles.scss';
+import { concat, slice } from 'lodash';
 import ArticlesList from '../SharedComponents/ArticlesList/ArticlesList';
 import FlatButton from '../Utils/FlatButton/FlatButton';
-import React from 'react';
+import React, { useState } from 'react';
 
 // TODO: delete articlesList
 const articlesList = {
@@ -98,19 +99,94 @@ const articlesList = {
       content:
         'Startups may not spring to mind when speaking about the beautiful country of Croatia. Indeed, the country is most popular as a tourist destination, and given that tourism accounted for about 20% of i… [+15508 chars]',
     },
+    {
+      source: {
+        id: 'the-wall-street-journal',
+        name: 'The Wall Street Journal',
+      },
+      author: 'Angus Loten',
+      title: 'Corporate Tech Leaders Are Mixed on EU Artificial Intelligence Bill - The Wall Street Journal',
+      description: 'Some welcome clarity on personal data use, others say proposed regulations will stifle innovation',
+      url: 'https://www.wsj.com/articles/corporate-tech-leaders-are-mixed-on-eu-artificial-intelligence-bill-11619049736',
+      urlToImage: 'https://images.wsj.net/im-328496/social',
+      publishedAt: '2021-04-22T00:02:00Z',
+      content:
+        'Some corporate technology leaders say a proposed clampdown by European regulators on the use of artificial intelligence will run up costs and stifle innovation, just as companies are starting to unlo… [+836 chars]',
+    },
+    {
+      source: {
+        id: 'the-wall-street-journal',
+        name: 'The Wall Street Journal',
+      },
+      author: 'Sadie Gurman',
+      title: 'U.S. Launches Probe Into Minneapolis Police Practices After George Floyd Killing - The Wall Street Journal',
+      description:
+        '<ol><li>U.S. Launches Probe Into Minneapolis Police Practices After George Floyd Killing  The Wall Street Journal\r\n</li><li>Merrick Garland Announces an Investigation Into Minneapolis Police Dept  The New York Times\r\n</li><li>Attorney general announces invest…',
+      url: 'https://www.wsj.com/articles/u-s-to-probe-minneapolis-police-practices-after-floyds-killing-11619013633',
+      urlToImage: 'https://images.wsj.net/im-328040/social',
+      publishedAt: '2021-04-21T23:55:00Z',
+      content:
+        'WASHINGTONThe Justice Department will investigate whether the Minneapolis Police Department engages in patterns of unconstitutional policing, Attorney General Merrick Garland said on Wednesday, a day… [+1086 chars]',
+    },
+    {
+      source: {
+        id: 'the-wall-street-journal',
+        name: 'The Wall Street Journal',
+      },
+      author: 'The Editorial Board',
+      title: 'Biden Indicts the Minneapolis Police - The Wall Street Journal',
+      description:
+        '<ol><li>Biden Indicts the Minneapolis Police  The Wall Street Journal\r\n</li><li>Merrick Garland Announces an Investigation Into Minneapolis Police Dept  The New York Times\r\n</li><li>Attorney general announces investigation into Minneapolis police practices  C…',
+      url: 'https://www.wsj.com/articles/biden-indicts-the-minneapolis-police-11619045332',
+      urlToImage: 'https://images.wsj.net/im-328449/social',
+      publishedAt: '2021-04-21T23:52:00Z',
+      content:
+        'Derek Chauvin awaits his murder sentence at a Minnesota Correctional Facility, yet the federal government spared hardly a moment before shifting its scrutiny toward his former colleagues. A new Justi… [+2138 chars]',
+    },
+    {
+      source: {
+        id: 'the-wall-street-journal',
+        name: 'The Wall Street Journal',
+      },
+      author: 'William Mauldin',
+      title: 'Biden Poised to Recognize Massacres of Armenians as Genocide, Officials Say - The Wall Street Journal',
+      description:
+        '<ol><li>Biden Poised to Recognize Massacres of Armenians as Genocide, Officials Say  The Wall Street Journal\r\n</li><li>Biden to Declare Atrocities Against Armenia Were Genocide  The New York Times\r\n</li><li>Biden under pressure to recognize Armenian genocide …',
+      url: 'https://www.wsj.com/articles/biden-poised-to-recognize-armenian-massacres-as-genocide-officials-say-11619048891',
+      urlToImage: 'https://images.wsj.net/im-328392/social',
+      publishedAt: '2021-04-21T23:48:00Z',
+      content:
+        'WASHINGTONPresident Biden is poised to formally declare that the massacres of Armenians in the early 20th century constituted genocide, U.S. officials said, a rare step that would further inflame tie… [+5340 chars]',
+    },
   ],
 };
 
 const Articles = (): JSX.Element => {
   const { articles } = articlesList;
+  const articleLimit = 6;
+
+  const [isVisibleShowMoreButton, setIsVisibleShowMoreButton] = useState(true);
+  const [listOfArticles, setListOfArticles] = useState(slice(articles, 0, articleLimit));
+  const [lastIndex, setLastIndex] = useState(articleLimit);
+
+  const showMore = () => {
+    const newIndex = lastIndex + articleLimit;
+    const canShowMoreArticles = newIndex < articles.length;
+    const newArticles = concat(listOfArticles, slice(articles, lastIndex, newIndex));
+    setLastIndex(newIndex);
+    setListOfArticles(newArticles);
+    setIsVisibleShowMoreButton(canShowMoreArticles);
+  };
 
   return (
     <div className="articles">
       <div className="articles__content content">
-        <ArticlesList articles={articles} />
-        <FlatButton className="content__show-more-button show-more-button" height="48px" name="show-more" reverse width="330px">
-          Show More
-        </FlatButton>
+        <ArticlesList articles={listOfArticles} />
+        {isVisibleShowMoreButton && (
+          <FlatButton className="content__show-more-button show-more-button" height="48px" name="show-more" onClick={showMore} reverse width="330px">
+            Show More
+          </FlatButton>
+        )}
       </div>
     </div>
   );
