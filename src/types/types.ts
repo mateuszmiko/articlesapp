@@ -13,3 +13,9 @@ export type ArticlePropsType = {
   publishedAt: string;
   content: string;
 };
+
+export type TopicsTypes = 'tech' | 'travel' | 'politics' | 'sports';
+
+export type Dates = 'this month' | 'this week' | 'today';
+
+export type SortByTypes = 'popularity' | 'publishedAt';

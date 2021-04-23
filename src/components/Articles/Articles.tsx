@@ -1,7 +1,10 @@
 import './articles.scss';
+import { ArticlePropsType } from '../../types/types';
 import { concat, slice } from 'lodash';
 import ArticlesList from '../SharedComponents/ArticlesList/ArticlesList';
+import Filters from '../SharedComponents/Filters/Filters';
 import FlatButton from '../Utils/FlatButton/FlatButton';
+import Header from '../Utils/Header/Header';
 import React, { useState } from 'react';
 
 // TODO: delete articlesList
@@ -161,12 +164,11 @@ const articlesList = {
   ],
 };
 
-const Articles = (): JSX.Element => {
+const Articles = () => {
   const { articles } = articlesList;
   const articleLimit = 6;
-
   const [isVisibleShowMoreButton, setIsVisibleShowMoreButton] = useState(true);
-  const [listOfArticles, setListOfArticles] = useState(slice(articles, 0, articleLimit));
+  const [listOfArticles, setListOfArticles] = useState<ArticlePropsType[]>(slice(articles, 0, articleLimit));
   const [lastIndex, setLastIndex] = useState(articleLimit);
 
   const showMore = () => {
@@ -181,6 +183,8 @@ const Articles = (): JSX.Element => {
   return (
     <div className="articles">
       <div className="articles__content content">
+        <Header text="Articles" />
+        <Filters />
         <ArticlesList articles={listOfArticles} />
         {isVisibleShowMoreButton && (
           <FlatButton className="content__show-more-button show-more-button" height="48px" name="show-more" onClick={showMore} reverse width="330px">

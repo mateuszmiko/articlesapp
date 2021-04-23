@@ -4,6 +4,8 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "moduleResolution": "node",
-    "types": ["node"]
+    "types": ["node"],
+    "lib": ["es2020", "dom"],
+    "target": "es2020"
   }
 }

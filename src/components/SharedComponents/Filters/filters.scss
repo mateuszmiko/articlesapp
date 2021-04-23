@@ -1,0 +1,13 @@
+@import '../../../styles/variables.scss';
+
+.filters {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 53px 12px;
+  width: 100%;
+
+  .dropdowns-list {
+    display: flex;
+  }
+}
