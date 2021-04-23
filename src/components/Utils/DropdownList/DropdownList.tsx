@@ -2,16 +2,18 @@ import './dropdownList.scss';
 import React, { ForwardRefRenderFunction, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 export type DropdownListHandle = {
+  getValue: () => string;
   resetValue: () => void;
 };
 
 type DropdownListPropsType = {
   defaultValue: string;
   list: string[];
+  onChangeValue?(value: string): void;
   [key: string]: unknown;
 };
 
-const DropdownList: ForwardRefRenderFunction<DropdownListHandle, DropdownListPropsType> = ({ defaultValue, list, ...props }, ref) => {
+const DropdownList: ForwardRefRenderFunction<DropdownListHandle, DropdownListPropsType> = ({ defaultValue, list, onChangeValue, ...props }, ref) => {
   const [value, setValue] = useState(defaultValue);
   const [isVisibleList, setVisibleList] = useState(false);
   const dropdownListRef = useRef<HTMLDivElement>();
@@ -26,6 +28,7 @@ const DropdownList: ForwardRefRenderFunction<DropdownListHandle, DropdownListPro
   }, [dropdownListRef]);
 
   useImperativeHandle(ref, () => ({
+    getValue: () => getValue(),
     resetValue: () => resetValue(),
   }));
 
@@ -33,10 +36,13 @@ const DropdownList: ForwardRefRenderFunction<DropdownListHandle, DropdownListPro
     event.stopPropagation();
     const index = list.findIndex((value) => value.toLowerCase() === (event.target as HTMLElement).innerText.toLowerCase());
     setValue(list[index]);
+    onChangeValue(list[index]);
     closeList();
   };
 
   const resetValue = () => setValue(defaultValue);
+
+  const getValue = () => value;
 
   const closeList = () => setVisibleList(false);
 
