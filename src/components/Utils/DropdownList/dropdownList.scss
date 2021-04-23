@@ -1,0 +1,63 @@
+@import '../../../styles/variables.scss';
+
+.dropdown-list {
+  margin: 0;
+  position: relative;
+
+  .content {
+    background: transparent;
+    border: transparent;
+    border-bottom: 1px solid $gainsboro;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    height: 32px;
+    margin-right: 16px;
+    margin-right: 16px;
+    padding: 0;
+    text-align: left;
+    text-transform: capitalize;
+    width: 104px;
+  }
+
+  ul {
+    background: $white;
+    border: 1px solid $gainsboro;
+    list-style: none;
+    margin: -1px 0 0;
+    padding: 0;
+    padding: 16px;
+    position: absolute;
+    width: 142px;
+    z-index: 1;
+
+    li {
+      cursor: pointer;
+      font-size: $font-14;
+      margin-right: 16px;
+      padding-bottom: 16px;
+      text-transform: capitalize;
+
+      &:hover {
+        color: $primary-color;
+      }
+
+      &:last-child {
+        padding-bottom: 0;
+      }
+    }
+  }
+
+  &::after {
+    border: solid $grey;
+    border-width: 0 2px 2px 0;
+    content: '';
+    display: inline-block;
+    left: 90px;
+    padding: 3px;
+    position: absolute;
+    top: 10px;
+    transform: rotate(45deg);
+    z-index: -1;
+  }
+}

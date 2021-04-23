@@ -1,0 +1,27 @@
+@import '../../../styles/variables.scss';
+
+.article-informations {
+  margin-top: 25px;
+
+  .published-at,
+  .author {
+    color: $light-grey;
+  }
+
+  .link {
+    color: $primary-color;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .published-at,
+  .author,
+  .link {
+    font-size: $font-14;
+    line-height: 16px;
+    margin-right: 16px;
+  }
+}

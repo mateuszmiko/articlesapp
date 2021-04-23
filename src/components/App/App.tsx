@@ -2,10 +2,9 @@ import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { history, store } from '../../store/store';
+import Articles from '../Articles/Articles';
 import PageLayout from '../PageLayout/PageLayout';
 import React from 'react';
-import Test from '../Test/Test';
-import TestNew from '../TestNew/TestNew';
 
 const App = () => (
   <Provider store={store}>
@@ -13,8 +12,7 @@ const App = () => (
       <Switch>
         <PageLayout>
           <Switch>
-            <Route component={Test} exact path="/" />
-            <Route component={TestNew} path="/test-new" />
+            <Route component={Articles} exact path="/" />
           </Switch>
         </PageLayout>
       </Switch>

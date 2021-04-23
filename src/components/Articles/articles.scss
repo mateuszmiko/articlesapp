@@ -1,0 +1,15 @@
+@import '../../styles/variables.scss';
+
+.articles {
+  padding-bottom: 151px;
+
+  .content {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+
+    .show-more-button {
+      margin-top: 65px;
+    }
+  }
+}
