@@ -1,5 +1,5 @@
 import './articles.scss';
-import { ArticlePropsType } from '../../types/types';
+import { ArticlePropsType, ArticlesResponseType } from '../../types/types';
 import { listOfArticlesSelector } from '../../selectors/articles';
 import { useSelector } from 'react-redux';
 import ArticlesList from '../SharedComponents/ArticlesList/ArticlesList';
@@ -19,7 +19,7 @@ const Articles = () => {
 
   useEffect(() => {
     if (typeof listOfArticles === 'undefined') return;
-    const { articles } = listOfArticles;
+    const { articles } = listOfArticles as ArticlesResponseType;
     prevPage === page ? setList(articles) : setList([...list, ...articles]);
     setIsVisibleShowMoreButton(true);
   }, [listOfArticles]);
@@ -35,7 +35,6 @@ const Articles = () => {
   };
 
   const resetPage = () => {
-    setLastIndex(articleLimit);
     setPrevPage(1);
     setPage(1);
   };
@@ -44,7 +43,7 @@ const Articles = () => {
     <div className="articles">
       <div className="articles__content content">
         <Header text="Articles" />
-        <Filters page={page} pageSize={lastIndex} resetPage={resetPage} />
+        <Filters page={page} resetPage={resetPage} />
         <ArticlesList articles={!!list?.length ? list : []} />
         {isVisibleShowMoreButton && (
           <FlatButton className="content__show-more-button show-more-button" height="48px" name="show-more" onClick={showMore} reverse width="330px">

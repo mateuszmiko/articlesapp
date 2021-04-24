@@ -1,19 +1,21 @@
 import './filters.scss';
 import { Dates, SortByTypes, TopicsTypes } from '../../../types/types';
+import { clearFiltersSettings, setFiltersSettingsActions } from '../../../actions/setFiltersSettingsActions';
+import { filtersSettingsSelector } from '../../../selectors/articles';
 import { getArticlesListRequestAction } from '../../../actions/getArticlesListActions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import DropdownList, { DropdownListHandle } from '../../Utils/DropdownList/DropdownList';
 import FlatButton from '../../Utils/FlatButton/FlatButton';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
+import isEqual from 'lodash.isequal';
 import moment from 'moment';
 
 type FiltersPropsType = {
-  pageSize: number;
   page: number;
   resetPage(): void;
 };
 
-const Filters = ({ pageSize, page, resetPage }: FiltersPropsType) => {
+const Filters = ({ page, resetPage }: FiltersPropsType) => {
   const topicsDropdownList = useRef<DropdownListHandle>(null);
   const datesDropdownList = useRef<DropdownListHandle>(null);
   const sortByDropdownList = useRef<DropdownListHandle>(null);
@@ -21,20 +23,18 @@ const Filters = ({ pageSize, page, resetPage }: FiltersPropsType) => {
   const dates: Dates[] = ['this month', 'this week', 'today'];
   const sortBy: SortByTypes[] = ['popularity', 'publishedAt'];
   const dispatch = useDispatch();
-  const [filters, setFilters] = useState({
-    fromDate: '',
-    toDate: '',
-    topic: 'topic',
-    sortBy: 'popularity',
-    pageSize,
-    page,
-  });
+  const filtersSettings = useSelector(filtersSettingsSelector);
+  const pages = {
+    pageSize: 6,
+    page: 1,
+  };
 
   useEffect(() => {
-    dispatch(getArticlesListRequestAction({ ...filters, page }));
+    dispatch(getArticlesListRequestAction({ ...filtersSettings, page }));
   }, [page]);
 
   const clearFilters = () => {
+    dispatch(clearFiltersSettings());
     dispatch(
       getArticlesListRequestAction({
         fromDate: '',
@@ -59,7 +59,8 @@ const Filters = ({ pageSize, page, resetPage }: FiltersPropsType) => {
         const startMonthDate = today.startOf('month').format(DATE_FORMAT);
         const endMonthDate = today.endOf('month').format(DATE_FORMAT);
         return {
-          ...filters,
+          ...filtersSettings,
+          ...pages,
           fromDate: startMonthDate,
           toDate: endMonthDate,
         };
@@ -67,13 +68,15 @@ const Filters = ({ pageSize, page, resetPage }: FiltersPropsType) => {
         const startWeek = today.startOf('week').format(DATE_FORMAT);
         const endWeek = today.endOf('week').format(DATE_FORMAT);
         return {
-          ...filters,
+          ...filtersSettings,
+          ...pages,
           fromDate: startWeek,
           toDate: endWeek,
         };
       case dates[2]:
         return {
-          ...filters,
+          ...filtersSettings,
+          ...pages,
           fromDate: today.format(DATE_FORMAT),
           toDate: today.format(DATE_FORMAT),
         };
@@ -81,18 +84,19 @@ const Filters = ({ pageSize, page, resetPage }: FiltersPropsType) => {
   };
 
   const onChangeValue = (value: Dates[] | SortByTypes[] | TopicsTypes[], type: 'topic' | 'dates' | 'sortBy') => {
-    let newFilters = { ...filters };
+    let newFilters = { ...filtersSettings };
     if (type === 'dates') {
       newFilters = formatDates(value as Dates[]);
     } else {
       newFilters = {
-        ...filters,
+        ...filtersSettings,
         [type]: value,
+        ...pages,
       };
     }
     resetPage();
-    setFilters(newFilters);
-    dispatch(getArticlesListRequestAction(newFilters));
+    dispatch(setFiltersSettingsActions(newFilters));
+    !isEqual(newFilters, filtersSettings) && dispatch(getArticlesListRequestAction(newFilters));
   };
 
   return (

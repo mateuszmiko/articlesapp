@@ -24,7 +24,8 @@ export type Dates = 'this month' | 'this week' | 'today';
 export type SortByTypes = 'popularity' | 'publishedAt';
 
 export type ArticlesPropsType = {
-  listOfArticles: ArticlesResponseType;
+  listOfArticles: ArticlesResponseType | Record<string, unknown>;
+  filtersSettings: FiltersType;
 };
 
 export interface IPropsType {

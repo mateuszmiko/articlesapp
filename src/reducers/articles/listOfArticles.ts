@@ -6,7 +6,7 @@ export const initialState: ArticlesResponseType | Record<string, never> = {};
 const listOfArticles = (state = initialState, action: GetArticlesListActionsType) => {
   switch (action.type) {
     case 'RECEIVE_GET_ARTICLES_LIST_SUCCESS':
-      return action.payload;
+      return action.payload || initialState;
     default:
       return state;
   }
