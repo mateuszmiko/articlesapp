@@ -1,5 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+require('dotenv').config();
 
 module.exports = {
   entry: path.resolve(__dirname, 'src/index.tsx'),
@@ -16,6 +18,9 @@ module.exports = {
       title: 'Articles App',
       meta: { viewport: 'width=device-width, initial-scale=1' },
       favicon: 'dist/assets/favicon.ico',
+    }),
+    new webpack.DefinePlugin({
+      'process.env.API_KEY': JSON.stringify(process.env.API_KEY),
     }),
   ],
   module: {

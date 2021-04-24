@@ -1,0 +1,26 @@
+@import '../../styles/variables.scss';
+
+.article-view {
+  .content {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .article-image {
+    height: 470px;
+    width: 100%;
+  }
+
+  .article-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 600px;
+  }
+
+  .link-go-to-back {
+    padding: 0 0 36px 53px;
+    width: 100%;
+  }
+}
