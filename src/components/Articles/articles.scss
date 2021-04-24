@@ -1,8 +1,6 @@
 @import '../../styles/variables.scss';
 
 .articles {
-  padding-bottom: 151px;
-
   .content {
     align-items: center;
     display: flex;
@@ -10,6 +8,11 @@
 
     .show-more-button {
       margin-top: 65px;
+    }
+
+    .article-image {
+      height: 212px;
+      width: 370px;
     }
   }
 }

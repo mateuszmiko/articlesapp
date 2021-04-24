@@ -7,4 +7,5 @@ export const filtersSettingsMock: FiltersType = {
   sortBy: 'popularity',
   pageSize: 6,
   page: 1,
+  dates: '',
 };

@@ -1,6 +1,5 @@
 import './filters.scss';
 import { Dates, SortByTypes, TopicsTypes } from '../../../types/types';
-import { clearFiltersSettings, setFiltersSettingsActions } from '../../../actions/setFiltersSettingsActions';
 import { filtersSettingsSelector } from '../../../selectors/articles';
 import { getArticlesListRequestAction } from '../../../actions/getArticlesListActions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,12 +9,17 @@ import React, { useEffect, useRef } from 'react';
 import isEqual from 'lodash.isequal';
 import moment from 'moment';
 
+import { clearFiltersSettings, setFiltersSettingsActions } from '../../../actions/setFiltersSettingsActions';
+
 type FiltersPropsType = {
   page: number;
+  setLoader(): void;
   resetPage(): void;
 };
 
-const Filters = ({ page, resetPage }: FiltersPropsType) => {
+type ValuesTypes = Dates[] | SortByTypes[] | TopicsTypes[];
+
+const Filters = ({ page, resetPage, setLoader }: FiltersPropsType) => {
   const topicsDropdownList = useRef<DropdownListHandle>(null);
   const datesDropdownList = useRef<DropdownListHandle>(null);
   const sortByDropdownList = useRef<DropdownListHandle>(null);
@@ -33,9 +37,10 @@ const Filters = ({ page, resetPage }: FiltersPropsType) => {
     dispatch(getArticlesListRequestAction({ ...filtersSettings, page }));
   }, [page]);
 
-  const clearFilters = () => {
-    dispatch(clearFiltersSettings());
-    dispatch(
+  const clearFilters = async () => {
+    await resetPage();
+    await dispatch(clearFiltersSettings());
+    await dispatch(
       getArticlesListRequestAction({
         fromDate: '',
         toDate: '',
@@ -43,12 +48,12 @@ const Filters = ({ page, resetPage }: FiltersPropsType) => {
         sortBy: 'popularity',
         pageSize: 6,
         page: 1,
+        dates: '',
       }),
     );
-    topicsDropdownList.current.resetValue();
-    datesDropdownList.current.resetValue();
-    sortByDropdownList.current.resetValue();
-    resetPage();
+    await topicsDropdownList.current.resetValue();
+    await datesDropdownList.current.resetValue();
+    await sortByDropdownList.current.resetValue();
   };
 
   const formatDates = (value: string | Dates[]) => {
@@ -63,6 +68,7 @@ const Filters = ({ page, resetPage }: FiltersPropsType) => {
           ...pages,
           fromDate: startMonthDate,
           toDate: endMonthDate,
+          dates: dates[0],
         };
       case dates[1]:
         const startWeek = today.startOf('week').format(DATE_FORMAT);
@@ -72,6 +78,7 @@ const Filters = ({ page, resetPage }: FiltersPropsType) => {
           ...pages,
           fromDate: startWeek,
           toDate: endWeek,
+          dates: dates[1],
         };
       case dates[2]:
         return {
@@ -79,12 +86,14 @@ const Filters = ({ page, resetPage }: FiltersPropsType) => {
           ...pages,
           fromDate: today.format(DATE_FORMAT),
           toDate: today.format(DATE_FORMAT),
+          dates: dates[2],
         };
     }
   };
 
-  const onChangeValue = (value: Dates[] | SortByTypes[] | TopicsTypes[], type: 'topic' | 'dates' | 'sortBy') => {
+  const onChangeValue = (value: ValuesTypes, type: 'topic' | 'dates' | 'sortBy') => {
     let newFilters = { ...filtersSettings };
+    setLoader();
     if (type === 'dates') {
       newFilters = formatDates(value as Dates[]);
     } else {
@@ -103,24 +112,24 @@ const Filters = ({ page, resetPage }: FiltersPropsType) => {
     <div className="filters">
       <div className="filters__dropdowns-list dropdowns-list">
         <DropdownList
-          defaultValue={'Topic'}
+          defaultValue={filtersSettings.topic || 'Topic'}
           list={topics}
           name="topics"
-          onChangeValue={(value) => onChangeValue(value, 'topic')}
+          onChangeValue={(value: ValuesTypes) => onChangeValue(value, 'topic')}
           ref={topicsDropdownList}
         />
         <DropdownList
-          defaultValue={'Time'}
+          defaultValue={filtersSettings.dates || 'Time'}
           list={dates}
           name="dates"
-          onChangeValue={(value) => onChangeValue(value, 'dates')}
+          onChangeValue={(value: ValuesTypes) => onChangeValue(value, 'dates')}
           ref={datesDropdownList}
         />
         <DropdownList
-          defaultValue={sortBy[0]}
+          defaultValue={filtersSettings.sortBy || sortBy[0]}
           list={sortBy}
           name="sortBy"
-          onChangeValue={(value) => onChangeValue(value, 'sortBy')}
+          onChangeValue={(value: ValuesTypes) => onChangeValue(value, 'sortBy')}
           ref={sortByDropdownList}
         />
       </div>

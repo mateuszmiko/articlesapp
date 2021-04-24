@@ -43,6 +43,7 @@ export function getArticlesListRequestAction({
       dispatch(receiveGetArticlesListSuccess(response.data));
     } catch (error) {
       dispatch(receiveGetArticlesListFailure());
+      throw error;
     }
   };
 }

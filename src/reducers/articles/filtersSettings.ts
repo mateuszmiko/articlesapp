@@ -8,6 +8,7 @@ export const initialState: FiltersType = {
   sortBy: 'popularity',
   pageSize: 6,
   page: 1,
+  dates: '',
 };
 
 const filtersSettings = (state = initialState, action: SetFiltersSettingsActionsType) => {

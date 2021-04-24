@@ -3,12 +3,12 @@ import React from 'react';
 import classNames from 'classnames';
 
 type ArticleDescriptionPropsType = {
-  description: string;
+  content: string;
   className?: string;
 };
 
-const ArticleDescription = ({ description, className }: ArticleDescriptionPropsType) => (
-  <p className={classNames('article-description', className)}>{description}</p>
+const ArticleDescription = ({ content, className }: ArticleDescriptionPropsType) => (
+  <p className={classNames('article-description', className)}>{content}</p>
 );
 
 export default ArticleDescription;

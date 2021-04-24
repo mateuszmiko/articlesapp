@@ -7,6 +7,7 @@ export type SourceType = {
 };
 
 export type ArticlePropsType = {
+  id?: number;
   source: SourceType;
   author: string;
   title: string;
@@ -47,6 +48,7 @@ export type FiltersType = {
   sortBy: string;
   pageSize: number;
   page: number;
+  dates: string;
 };
 
 export type ArticlesThunkAction<R, A extends Action = AnyAction, E = undefined, S = IPropsType> = ThunkAction<R, S, E, A>;

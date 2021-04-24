@@ -1,5 +1,9 @@
 @import './variables.scss';
 
+:root {
+  --primary-color: #{$primary-color};
+}
+
 * {
   box-sizing: border-box;
 }
