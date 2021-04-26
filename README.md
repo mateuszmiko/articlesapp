@@ -1,5 +1,7 @@
 # articlesapp
 
+Add .env file with API_KEY before you starting app.
+
 ## Project setup
 
 ```
